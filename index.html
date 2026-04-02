@@ -43,7 +43,6 @@ body{
   margin-top:-40px;
 }
 
-/* QUIZ LOGO FIX */
 #quiz #logo{
   margin-top:-60px;
 }
@@ -53,12 +52,9 @@ body{
   display:flex;
   align-items:center;
   gap:12px;
-  margin-top:10px;
 }
 
-.sword{
-  font-size:22px;
-}
+.sword{font-size:22px;}
 
 #enterBtn{
   padding:14px 36px;
@@ -77,7 +73,7 @@ body{
   font-size:18px;
 }
 
-/* QUIZ BOX */
+/* QUIZ */
 .box{
   background:black;
   color:white;
@@ -87,90 +83,127 @@ body{
   border-radius:14px;
 }
 
-/* PROGRESS BAR */
 #progressBarWrap{
   width:100%;
   height:8px;
   background:#333;
   border-radius:10px;
   overflow:hidden;
-  margin-bottom:10px;
 }
 
 #progressBar{
   height:100%;
   width:0%;
   background:#00c853;
-  transition:width 0.4s ease;
+  transition:0.4s;
 }
 
-/* TIMER BAR */
 #timerBarWrap{
   width:100%;
   height:6px;
   background:#222;
   border-radius:10px;
   overflow:hidden;
-  margin-bottom:10px;
+  margin-top:6px;
 }
 
 #timerBar{
   height:100%;
   width:100%;
   background:#ff3b30;
-  transition:width 1s linear;
+  transition:1s linear;
 }
 
-/* QUESTION */
 #question{
   font-size:19px;
   font-weight:bold;
   margin:15px 0;
-  line-height:1.4;
 }
 
-/* OPTIONS */
 .option{
   background:white;
   color:black;
   padding:14px;
   margin:10px 0;
   border-radius:10px;
-  font-size:17px;
   cursor:pointer;
-  transition:all 0.25s ease;
+  transition:0.25s;
 }
 
-.option:hover{
-  transform:scale(1.03);
-}
+.option:hover{transform:scale(1.03);}
 
-/* GLOW EFFECT */
 .correct{
   background:#00c853 !important;
   box-shadow:0 0 12px #00ff88;
 }
 
-.wrong{
-  background:#ff3b30 !important;
-}
+.wrong{background:#ff3b30 !important;}
 
 .shake{animation:shake 0.25s;}
 @keyframes shake{
-  0%{transform:translateX(0);}
   25%{transform:translateX(-4px);}
   50%{transform:translateX(4px);}
-  75%{transform:translateX(-4px);}
-  100%{transform:translateX(0);}
 }
 
-/* SCORE */
+/* SCORECARD */
 .card{
   background:#00c853;
   border:3px solid black;
-  padding:18px;
   border-radius:12px;
-  width:260px;
+  width:300px;
+  overflow:hidden;
+  position:relative;
+}
+
+/* TOP IMAGE */
+.card-top img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+}
+
+#resultText{
+  font-weight:bold;
+  font-size:22px;
+  color:black;
+  margin:10px 0;
+}
+
+.divider{
+  width:90%;
+  height:2px;
+  background:black;
+  margin:8px auto;
+}
+
+.stats{
+  font-weight:bold;
+  font-size:18px;
+  color:black;
+}
+
+#gaInside{
+  width:40px;
+  position:absolute;
+  right:10px;
+  bottom:10px;
+}
+
+.inputBox{
+  margin-top:15px;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+}
+
+.saveBtn{
+  margin-top:10px;
+  padding:10px 20px;
+  border:none;
+  border-radius:8px;
+  background:black;
+  color:white;
+  font-weight:bold;
 }
 
 #leaderboard{
@@ -214,13 +247,8 @@ body{
 
   <div class="box">
 
-    <div id="progressBarWrap">
-      <div id="progressBar"></div>
-    </div>
-
-    <div id="timerBarWrap">
-      <div id="timerBar"></div>
-    </div>
+    <div id="progressBarWrap"><div id="progressBar"></div></div>
+    <div id="timerBarWrap"><div id="timerBar"></div></div>
 
     <div id="progress"></div>
     <div id="timer"></div>
@@ -232,16 +260,27 @@ body{
 </div>
 
 <!-- SCORE -->
-<div id="scoreCard" class="section" style="display:none;">
+<div id="scoreCard" class="section" style="display:none; align-items:flex-start; padding-top:40px;">
+
   <div class="card">
-    <div id="resultImg"></div>
-    <h3 id="resultText"></h3>
-    <p id="finalScore"></p>
-    <p id="finalStreak"></p>
+
+    <div id="resultImg" class="card-top"></div>
+
+    <h2 id="resultText"></h2>
+
+    <div class="divider"></div>
+
+    <div class="stats">
+      <p id="finalScore"></p>
+      <p id="finalStreak"></p>
+    </div>
+
+    <img id="gaInside" src="https://raw.githubusercontent.com/itszavoo/images/main/ga.jpeg">
+
   </div>
 
-  <input id="name" placeholder="Enter name">
-  <button onclick="saveScore()">Save</button>
+  <input id="name" placeholder="Enter your name" class="inputBox">
+  <button onclick="saveScore()" class="saveBtn">Save Score</button>
 
   <div id="leaderboard"></div>
 </div>
@@ -282,6 +321,7 @@ function loadQ(){
   q[i][1].forEach((o,index)=>{
     html+=`<div class="option" onclick="check(${index},this)">${o}</div>`;
   });
+
   document.getElementById("options").innerHTML=html;
 
   startTimer();
@@ -297,7 +337,6 @@ function startTimer(){
   timerInterval=setInterval(()=>{
     time--;
     document.getElementById("timer").innerText="Time: "+time;
-
     document.getElementById("timerBar").style.width=(time/20)*100+"%";
 
     if(time<=0){
@@ -315,9 +354,7 @@ function check(ans,el){
   if(ans==q[i][2]){
     el.classList.add("correct","shake");
 
-    if(streak>0){ score+=2; }
-    else{ score+=1; }
-
+    if(streak>0){score+=2;} else{score+=1;}
     streak++;
 
     el.innerHTML+=` <img src="https://raw.githubusercontent.com/itszavoo/images/main/chadg.jpeg" width="18">`;
@@ -334,26 +371,50 @@ function end(){
   document.getElementById("quiz").style.display="none";
   document.getElementById("scoreCard").style.display="flex";
 
-  document.getElementById("progressBar").style.width="100%";
-
   let img,text;
 
   if(score < 10){
-    img="https://raw.githubusercontent.com/itszavoo/images/main/mouse.jpeg"; text="Rookie !!";
+    img="https://raw.githubusercontent.com/itszavoo/images/main/mouse.jpeg";
+    text="Rookie !!";
   }
   else if(score < 15){
-    img="https://raw.githubusercontent.com/itszavoo/images/main/chadg.jpeg"; text="Mokuchad !!";
+    img="https://raw.githubusercontent.com/itszavoo/images/main/chadg.jpeg";
+    text="GA Chad !!";
   }
   else{
-    img="https://raw.githubusercontent.com/itszavoo/images/main/winner.jpeg"; text="Moku Winner !!";
+    img="https://raw.githubusercontent.com/itszavoo/images/main/winner.jpeg";
+    text="GA Legend !!";
   }
 
-  document.getElementById("resultImg").innerHTML=`<img src="${img}" width="110">`;
+  document.getElementById("resultImg").innerHTML=`<img src="${img}">`;
   document.getElementById("resultText").innerText=text;
-  document.getElementById("finalScore").innerText="Score: "+score;
+  document.getElementById("finalScore").innerText="Score: "+score+" / 20";
   document.getElementById("finalStreak").innerText="Streak: "+streak;
 
   displayLeaderboard();
+}
+
+function saveScore(){
+  let name=document.getElementById("name").value;
+  if(!name)return;
+
+  let data=JSON.parse(localStorage.getItem("lb")||"[]");
+  data.push({name,score});
+  data.sort((a,b)=>b.score-a.score);
+
+  localStorage.setItem("lb",JSON.stringify(data));
+  displayLeaderboard();
+}
+
+function displayLeaderboard(){
+  let data=JSON.parse(localStorage.getItem("lb")||"[]");
+
+  let html="<h3>Leaderboard</h3>";
+  data.forEach((d,i)=>{
+    html+=`<p>${i+1}. ${d.name} - ${d.score}</p>`;
+  });
+
+  document.getElementById("leaderboard").innerHTML=html;
 }
 </script>
 

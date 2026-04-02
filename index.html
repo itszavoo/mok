@@ -5,155 +5,142 @@
 <title>Grand Arena</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #2673E8;
+body{
+  margin:0;
+  font-family:Arial;
+  background:#2673E8;
 }
 
-/* CORNER ICONS */
-.corner {
-  position: fixed;
-  z-index: 10;
-}
-#moku { top: 15px; left: 15px; width: 80px; }
-#ga { top: 15px; right: 15px; width: 80px; }
-#star { bottom: 15px; left: 15px; width: 70px; }
+/* CORNERS */
+.corner{position:fixed;z-index:10;}
+#moku{top:12px;left:12px;width:70px;}
+#ga{top:12px;right:12px;width:70px;}
+#star{bottom:12px;left:12px;width:65px;}
 
-/* WATERMARK */
-#watermark {
-  position: fixed;
-  bottom: 15px;
-  right: 15px;
-  color: white;
-  font-weight: bold;
+#watermark{
+  position:fixed;
+  bottom:12px;
+  right:12px;
+  color:white;
+  font-weight:bold;
 }
 
-/* CENTER SECTIONS */
-.section {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+/* CENTER */
+.section{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:20px;
 }
 
-/* LOGO */
-#logo {
-  width: 260px;
-  margin-bottom: 30px;
+#logo{
+  width:260px;
+  margin-bottom:25px;
 }
 
-/* BUTTON */
-#enterBtn {
-  padding: 15px 40px;
-  font-size: 20px;
-  background: #00c853;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
+#enterBtn{
+  padding:14px 36px;
+  font-size:18px;
+  background:#00c853;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
 }
 
-/* TEXT */
-.subtitle {
-  color: white;
-  font-weight: bold;
-  margin-top: 15px;
+.subtitle{
+  color:white;
+  font-weight:bold;
+  margin-top:12px;
 }
 
-/* QUIZ BOX */
-.box {
-  background: black;
-  color: white;
-  padding: 25px;
-  width: 90%;
-  max-width: 500px;
-  border-radius: 15px;
+/* QUIZ */
+.box{
+  background:black;
+  color:white;
+  padding:20px;
+  width:100%;
+  max-width:480px;
+  border-radius:14px;
 }
 
-/* QUESTION */
-#question {
-  font-size: 20px;
-  font-weight: bold;
-  margin: 15px 0;
+#question{
+  font-size:19px;
+  font-weight:bold;
+  margin:15px 0;
+  line-height:1.4;
 }
 
-/* OPTIONS */
-.option {
-  background: white;
-  color: black;
-  padding: 14px;
-  margin: 10px 0;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 18px;
-  transition: 0.3s;
+.option{
+  background:white;
+  color:black;
+  padding:12px;
+  margin:10px 0;
+  border-radius:8px;
+  font-size:17px;
+  cursor:pointer;
 }
 
-.correct { background: green !important; }
-.wrong { background: red !important; }
+.correct{background:#00c853 !important;}
+.wrong{background:#ff3b30 !important;}
 
-@keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
-}
-.shake { animation: shake 0.3s; }
-
-/* SCORE CARD */
-.card {
-  background: #00c853;
-  border: 3px solid black;
-  padding: 20px;
-  border-radius: 12px;
-  width: 300px;
+.shake{animation:shake 0.25s;}
+@keyframes shake{
+  0%{transform:translateX(0);}
+  25%{transform:translateX(-4px);}
+  50%{transform:translateX(4px);}
+  75%{transform:translateX(-4px);}
+  100%{transform:translateX(0);}
 }
 
-/* LEADERBOARD */
-#leaderboard {
-  background: black;
-  color: white;
-  margin-top: 20px;
-  padding: 10px;
-  width: 90%;
-  max-width: 400px;
+/* SCORE */
+.card{
+  background:#00c853;
+  border:3px solid black;
+  padding:18px;
+  border-radius:12px;
+  width:260px;
+}
+
+#leaderboard{
+  background:black;
+  color:white;
+  margin-top:20px;
+  padding:10px;
+  width:100%;
+  max-width:350px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- CORNERS -->
-<img id="moku" class="corner" src="https://raw.githubusercontent.com/itszavoo/logos/main/moku.png">
-<img id="ga" class="corner" src="https://raw.githubusercontent.com/itszavoo/logos/main/ga.png">
-<img id="star" class="corner" src="https://raw.githubusercontent.com/itszavoo/logos/main/star.png">
+<img id="moku" class="corner" src="YOUR_MOKU">
+<img id="ga" class="corner" src="YOUR_GA">
+<img id="star" class="corner" src="YOUR_STAR">
 
 <div id="watermark">Made by Zavo</div>
 
 <!-- HOME -->
 <div id="home" class="section">
-  <img id="logo" src="https://raw.githubusercontent.com/itszavoo/logos/main/logo.png">
-  
+  <img id="logo" src="YOUR_LOGO">
   ⚔️ <button id="enterBtn" onclick="startQuiz()">Enter</button> ⚔️
-  
   <div class="subtitle">
-    Only the strongest qualify 
-    <img src="https://raw.githubusercontent.com/itszavoo/logos/main/mokuchad.png" width="30">
+    Only the strongest quality 
+    <img src="YOUR_MOKUCHAD" width="28">
   </div>
 </div>
 
 <!-- QUIZ -->
 <div id="quiz" class="section" style="display:none;">
-  <img id="logo" src="https://raw.githubusercontent.com/itszavoo/logos/main/logo.png">
+  <img id="logo" src="YOUR_LOGO">
 
   <div class="box">
     <div id="progress"></div>
     <div id="timer"></div>
     <div id="streak"></div>
-
     <div id="question"></div>
     <div id="options"></div>
   </div>
@@ -188,16 +175,19 @@ let q = [
 ["Does higher rarity always mean better contest performance?",["Yes","No","Mostly"],1]
 ];
 
-let i=0, score=0, streak=0, timerInterval;
+let i=0, score=0, streak=0;
+let timerInterval;
 
+/* START */
 function startQuiz(){
   document.getElementById("home").style.display="none";
   document.getElementById("quiz").style.display="flex";
   loadQ();
 }
 
+/* LOAD */
 function loadQ(){
-  if(i>=q.length){ end(); return; }
+  if(i>=q.length){end();return;}
 
   document.getElementById("question").innerText=q[i][0];
   document.getElementById("progress").innerText=(i+1)+"/10";
@@ -212,11 +202,12 @@ function loadQ(){
   startTimer();
 }
 
+/* TIMER */
 function startTimer(){
+  clearInterval(timerInterval);
+
   let time=20;
   document.getElementById("timer").innerText="Time: "+time;
-
-  clearInterval(timerInterval);
 
   timerInterval=setInterval(()=>{
     time--;
@@ -231,39 +222,49 @@ function startTimer(){
   },1000);
 }
 
+/* CHECK (FIXED SCORING) */
 function check(ans,el){
   clearInterval(timerInterval);
 
   if(ans==q[i][2]){
     el.classList.add("correct","shake");
-    score++;
-    streak++;
-    score+=streak; // streak bonus
 
-    el.innerHTML+=` <img src="https://raw.githubusercontent.com/itszavoo/logos/main/mokuchad.png" width="20">`;
+    if(streak>0){
+      score += 2;
+    } else {
+      score += 1;
+    }
+
+    streak++;
+
+    el.innerHTML+=` <img src="YOUR_MOKUCHAD" width="18">`;
+
   } else {
     el.classList.add("wrong","shake");
     streak=0;
   }
 
-  setTimeout(()=>{ i++; loadQ(); },800);
+  setTimeout(()=>{i++;loadQ();},700);
 }
 
+/* END */
 function end(){
   document.getElementById("quiz").style.display="none";
   document.getElementById("scoreCard").style.display="flex";
 
-  let img="", text="";
+  let img,text;
 
-  if(score<=10){
-    img="https://raw.githubusercontent.com/itszavoo/logos/main/mouse.png"; text="Rookie !!";
-  } else if(score<=15){
-    img="https://raw.githubusercontent.com/itszavoo/logos/main/mokuchad.png"; text="Mokuchad !!";
-  } else {
-    img="https://raw.githubusercontent.com/itszavoo/logos/main/winner.png"; text="Moku Winner !!";
+  if(score < 10){
+    img="YOUR_MOUSE"; text="Rookie !!";
+  }
+  else if(score < 15){
+    img="YOUR_MOKUCHAD"; text="Mokuchad !!";
+  }
+  else{
+    img="YOUR_WINNER"; text="Moku Winner !!";
   }
 
-  document.getElementById("resultImg").innerHTML=`<img src="${img}" width="120">`;
+  document.getElementById("resultImg").innerHTML=`<img src="${img}" width="110">`;
   document.getElementById("resultText").innerText=text;
   document.getElementById("finalScore").innerText="Score: "+score;
   document.getElementById("finalStreak").innerText="Streak: "+streak;
@@ -271,16 +272,15 @@ function end(){
   displayLeaderboard();
 }
 
+/* LEADERBOARD */
 function saveScore(){
   let name=document.getElementById("name").value;
-  if(!name) return;
+  if(!name)return;
 
   let data=JSON.parse(localStorage.getItem("lb")||"[]");
-
-  data.push({name,score,streak});
-  data.sort((a,b)=>b.score-a.score);
-
+  data.push({name,score});
   localStorage.setItem("lb",JSON.stringify(data));
+
   displayLeaderboard();
 }
 
@@ -288,7 +288,6 @@ function displayLeaderboard(){
   let data=JSON.parse(localStorage.getItem("lb")||"[]");
 
   let html="<h3>Leaderboard</h3>";
-
   data.forEach((d,i)=>{
     html+=`<p>${i+1}. ${d.name} - ${d.score}</p>`;
   });

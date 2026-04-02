@@ -118,8 +118,8 @@ body{
 <body>
 
 <img id="moku" class="corner" src="https://raw.githubusercontent.com/itszavoo/mokutm/refs/heads/main/moku.png">
-<img id="ga" class="corner" src="https://raw.githubusercontent.com/itszavoo/logos/main/ga.png">
-<img id="star" class="corner" src="https://raw.githubusercontent.com/itszavoo/logos/main/star.png">
+<img id="ga" class="corner" src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/ga.jpeg">
+<img id="star" class="corner" src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/star.jpeg">
 
 <div id="watermark">Made by Zavo</div>
 
@@ -128,14 +128,14 @@ body{
   <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/logo.jpeg">
   ⚔️ <button id="enterBtn" onclick="startQuiz()">Enter</button> ⚔️
   <div class="subtitle">
-    Only the strongest quality 
-    <img src="https://raw.githubusercontent.com/itszavoo/logos/main/mokuchad.png" width="28">
+    Only the strongest qualify 
+    <img src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/chadb.jpeg" width="28">
   </div>
 </div>
 
 <!-- QUIZ -->
 <div id="quiz" class="section" style="display:none;">
-  <img id="logo" src="https://raw.githubusercontent.com/itszavoo/logos/main/logo.png">
+  <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/logo.jpeg">
 
   <div class="box">
     <div id="progress"></div>
@@ -237,7 +237,7 @@ function check(ans,el){
 
     streak++;
 
-    el.innerHTML+=` <img src="https://raw.githubusercontent.com/itszavoo/logos/main/mokuchad.png" width="18">`;
+    el.innerHTML+=` <img src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/chadt.jpeg" width="18">`;
 
   } else {
     el.classList.add("wrong","shake");
@@ -255,13 +255,13 @@ function end(){
   let img,text;
 
   if(score < 10){
-    img="https://raw.githubusercontent.com/itszavoo/logos/main/mouse.png"; text="Rookie !!";
+    img="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/mouse.jpeg"; text="Rookie !!";
   }
   else if(score < 15){
-    img="https://raw.githubusercontent.com/itszavoo/logos/main/mokuchad.png"; text="Mokuchad !!";
+    img="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/chadg.jpeg"; text="Mokuchad !!";
   }
   else{
-    img="https://raw.githubusercontent.com/itszavoo/logos/main/winner.png"; text="Moku Winner !!";
+    img="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/winner.jpeg"; text="Moku Winner !!";
   }
 
   document.getElementById("resultImg").innerHTML=`<img src="${img}" width="110">`;

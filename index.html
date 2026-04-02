@@ -38,22 +38,36 @@ body{
 
 #logo{
   width:260px;
-  margin-bottom:25px;
+  margin-bottom:35px;
+  margin-top:-40px; /* moves slightly up */
+}
+
+#enterWrap{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:10px;
+}
+
+.sword{
+  font-size:22px;
 }
 
 #enterBtn{
   padding:14px 36px;
   font-size:18px;
   background:#00c853;
-  border:none;
+  border:2px solid black; /* added */
   border-radius:10px;
   cursor:pointer;
+  font-weight:bold; /* bold text */
 }
 
 .subtitle{
   color:white;
   font-weight:bold;
-  margin-top:12px;
+  margin-top:16px;
+  font-size:18px; /* bigger */
 }
 
 /* QUIZ */
@@ -125,14 +139,21 @@ body{
 
 <!-- HOME -->
 <div id="home" class="section">
-  <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/logo.jpeg">
-  ⚔️ <button id="enterBtn" onclick="startQuiz()">Enter</button> ⚔️
+
+  <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/main/logo.jpeg">
+
+  <div id="enterWrap">
+    <span class="sword">⚔️</span>
+    <button id="enterBtn" onclick="startQuiz()">Enter</button>
+    <span class="sword">⚔️</span>
+  </div>
+
   <div class="subtitle">
     Only the strongest qualify 
-    <img src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/chadb.jpeg" width="28">
+    <img src="https://raw.githubusercontent.com/itszavoo/images/main/chadb.jpeg" width="36">
   </div>
-</div>
 
+</div>
 <!-- QUIZ -->
 <div id="quiz" class="section" style="display:none;">
   <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/logo.jpeg">

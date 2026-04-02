@@ -117,25 +117,25 @@ body{
 
 <body>
 
-<img id="moku" class="corner" src="YOUR_MOKU">
-<img id="ga" class="corner" src="YOUR_GA">
-<img id="star" class="corner" src="YOUR_STAR">
+<img id="moku" class="corner" src="https://raw.githubusercontent.com/itszavoo/logos/main/moku.png">
+<img id="ga" class="corner" src="https://raw.githubusercontent.com/itszavoo/logos/main/ga.png">
+<img id="star" class="corner" src="https://raw.githubusercontent.com/itszavoo/logos/main/star.png">
 
 <div id="watermark">Made by Zavo</div>
 
 <!-- HOME -->
 <div id="home" class="section">
-  <img id="logo" src="YOUR_LOGO">
+  <img id="logo" src="https://raw.githubusercontent.com/itszavoo/logos/main/logo.png">
   ⚔️ <button id="enterBtn" onclick="startQuiz()">Enter</button> ⚔️
   <div class="subtitle">
     Only the strongest quality 
-    <img src="YOUR_MOKUCHAD" width="28">
+    <img src="https://raw.githubusercontent.com/itszavoo/logos/main/mokuchad.png" width="28">
   </div>
 </div>
 
 <!-- QUIZ -->
 <div id="quiz" class="section" style="display:none;">
-  <img id="logo" src="YOUR_LOGO">
+  <img id="logo" src="https://raw.githubusercontent.com/itszavoo/logos/main/logo.png">
 
   <div class="box">
     <div id="progress"></div>
@@ -237,7 +237,7 @@ function check(ans,el){
 
     streak++;
 
-    el.innerHTML+=` <img src="YOUR_MOKUCHAD" width="18">`;
+    el.innerHTML+=` <img src="https://raw.githubusercontent.com/itszavoo/logos/main/mokuchad.png" width="18">`;
 
   } else {
     el.classList.add("wrong","shake");
@@ -255,13 +255,13 @@ function end(){
   let img,text;
 
   if(score < 10){
-    img="YOUR_MOUSE"; text="Rookie !!";
+    img="https://raw.githubusercontent.com/itszavoo/logos/main/mouse.png"; text="Rookie !!";
   }
   else if(score < 15){
-    img="YOUR_MOKUCHAD"; text="Mokuchad !!";
+    img="https://raw.githubusercontent.com/itszavoo/logos/main/mokuchad.png"; text="Mokuchad !!";
   }
   else{
-    img="YOUR_WINNER"; text="Moku Winner !!";
+    img="https://raw.githubusercontent.com/itszavoo/logos/main/winner.png"; text="Moku Winner !!";
   }
 
   document.getElementById("resultImg").innerHTML=`<img src="${img}" width="110">`;

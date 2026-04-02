@@ -43,6 +43,12 @@ body{
   margin-top:-40px;
 }
 
+/* QUIZ LOGO FIX */
+#quiz #logo{
+  margin-top:-60px;
+}
+
+/* BUTTON */
 #enterWrap{
   display:flex;
   align-items:center;
@@ -71,11 +77,7 @@ body{
   font-size:18px;
 }
 
-/* QUIZ */
-#quiz #logo{
-  margin-top:-30px;
-}
-
+/* QUIZ BOX */
 .box{
   background:black;
   color:white;
@@ -85,7 +87,7 @@ body{
   border-radius:14px;
 }
 
-/* Progress bar */
+/* PROGRESS BAR */
 #progressBarWrap{
   width:100%;
   height:8px;
@@ -102,6 +104,24 @@ body{
   transition:width 0.4s ease;
 }
 
+/* TIMER BAR */
+#timerBarWrap{
+  width:100%;
+  height:6px;
+  background:#222;
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:10px;
+}
+
+#timerBar{
+  height:100%;
+  width:100%;
+  background:#ff3b30;
+  transition:width 1s linear;
+}
+
+/* QUESTION */
 #question{
   font-size:19px;
   font-weight:bold;
@@ -109,6 +129,7 @@ body{
   line-height:1.4;
 }
 
+/* OPTIONS */
 .option{
   background:white;
   color:black;
@@ -124,8 +145,15 @@ body{
   transform:scale(1.03);
 }
 
-.correct{background:#00c853 !important;}
-.wrong{background:#ff3b30 !important;}
+/* GLOW EFFECT */
+.correct{
+  background:#00c853 !important;
+  box-shadow:0 0 12px #00ff88;
+}
+
+.wrong{
+  background:#ff3b30 !important;
+}
 
 .shake{animation:shake 0.25s;}
 @keyframes shake{
@@ -158,15 +186,14 @@ body{
 
 <body>
 
-<img id="moku" class="corner" src="https://raw.githubusercontent.com/itszavoo/mokutm/refs/heads/main/moku.png">
-<img id="ga" class="corner" src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/ga.jpeg">
-<img id="star" class="corner" src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/star.jpeg">
+<img id="moku" class="corner" src="https://raw.githubusercontent.com/itszavoo/mokutm/main/moku.png">
+<img id="ga" class="corner" src="https://raw.githubusercontent.com/itszavoo/images/main/ga.jpeg">
+<img id="star" class="corner" src="https://raw.githubusercontent.com/itszavoo/images/main/star.jpeg">
 
 <div id="watermark">Made by Zavo</div>
 
 <!-- HOME -->
 <div id="home" class="section">
-
   <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/main/logo.jpeg">
 
   <div id="enterWrap">
@@ -179,18 +206,20 @@ body{
     Only the strongest qualify 
     <img src="https://raw.githubusercontent.com/itszavoo/images/main/chadb.jpeg" width="36">
   </div>
-
 </div>
 
 <!-- QUIZ -->
 <div id="quiz" class="section" style="display:none;">
-  <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/logo.jpeg">
+  <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/main/logo.jpeg">
 
   <div class="box">
 
-    <!-- NEW PROGRESS BAR -->
     <div id="progressBarWrap">
       <div id="progressBar"></div>
+    </div>
+
+    <div id="timerBarWrap">
+      <div id="timerBar"></div>
     </div>
 
     <div id="progress"></div>
@@ -218,18 +247,7 @@ body{
 </div>
 
 <script>
-let q = [
-["Total number of Scheme cards in Grand Arena?",["32","35","38"],1],
-["If a lineup uses a Scheme card that rewards rarity diversity, what is the optimal lineup structure?",["Full Legendary","Mixed rarity (one of each tier)","Random lineup"],1],
-["What does Fortitude mainly affect?",["Damage","Respawn and deposit time","Speed"],1],
-["Which Scheme card benefits from unique categories in a lineup?",["Whale Watching","Collect ’Em All","Power Play"],1],
-["Which stat is least likely tied to defensive mechanics?",["Fortitude","Dexterity","Endurance"],1],
-["Which rarity card gives a 1.75x points multiplier?",["Epic","Rare","Legendary"],2],
-["Which stat would help maintain performance consistency across matches?",["Endurance","Strength","Fortitude"],2],
-["Which contest type is best for consistent returns over time?",["Top 20%","50/50","Free"],1],
-["What matters most in Grand Arena at high level?",["Card rarity","Number of entries","Decision making quality"],2],
-["Does higher rarity always mean better contest performance?",["Yes","No","Mostly"],1]
-];
+let q = [...]; // keep your same questions
 
 let i=0, score=0, streak=0;
 let timerInterval;
@@ -247,15 +265,12 @@ function loadQ(){
   document.getElementById("progress").innerText=(i+1)+"/10";
   document.getElementById("streak").innerText="Streak: "+streak;
 
-  /* PROGRESS BAR UPDATE */
-  let percent = (i / q.length) * 100;
-  document.getElementById("progressBar").style.width = percent + "%";
+  document.getElementById("progressBar").style.width=(i/q.length)*100+"%";
 
   let html="";
   q[i][1].forEach((o,index)=>{
     html+=`<div class="option" onclick="check(${index},this)">${o}</div>`;
   });
-
   document.getElementById("options").innerHTML=html;
 
   startTimer();
@@ -266,10 +281,13 @@ function startTimer(){
 
   let time=20;
   document.getElementById("timer").innerText="Time: "+time;
+  document.getElementById("timerBar").style.width="100%";
 
   timerInterval=setInterval(()=>{
     time--;
     document.getElementById("timer").innerText="Time: "+time;
+
+    document.getElementById("timerBar").style.width=(time/20)*100+"%";
 
     if(time<=0){
       clearInterval(timerInterval);
@@ -291,7 +309,7 @@ function check(ans,el){
 
     streak++;
 
-    el.innerHTML+=` <img src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/chadg.jpeg" width="18">`;
+    el.innerHTML+=` <img src="https://raw.githubusercontent.com/itszavoo/images/main/chadg.jpeg" width="18">`;
 
   } else {
     el.classList.add("wrong","shake");
@@ -310,13 +328,13 @@ function end(){
   let img,text;
 
   if(score < 10){
-    img="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/mouse.jpeg"; text="Rookie !!";
+    img="https://raw.githubusercontent.com/itszavoo/images/main/mouse.jpeg"; text="Rookie !!";
   }
   else if(score < 15){
-    img="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/chadg.jpeg"; text="Mokuchad !!";
+    img="https://raw.githubusercontent.com/itszavoo/images/main/chadg.jpeg"; text="Mokuchad !!";
   }
   else{
-    img="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/winner.jpeg"; text="Moku Winner !!";
+    img="https://raw.githubusercontent.com/itszavoo/images/main/winner.jpeg"; text="Moku Winner !!";
   }
 
   document.getElementById("resultImg").innerHTML=`<img src="${img}" width="110">`;
@@ -325,28 +343,6 @@ function end(){
   document.getElementById("finalStreak").innerText="Streak: "+streak;
 
   displayLeaderboard();
-}
-
-function saveScore(){
-  let name=document.getElementById("name").value;
-  if(!name)return;
-
-  let data=JSON.parse(localStorage.getItem("lb")||"[]");
-  data.push({name,score});
-  localStorage.setItem("lb",JSON.stringify(data));
-
-  displayLeaderboard();
-}
-
-function displayLeaderboard(){
-  let data=JSON.parse(localStorage.getItem("lb")||"[]");
-
-  let html="<h3>Leaderboard</h3>";
-  data.forEach((d,i)=>{
-    html+=`<p>${i+1}. ${d.name} - ${d.score}</p>`;
-  });
-
-  document.getElementById("leaderboard").innerHTML=html;
 }
 </script>
 

@@ -273,7 +273,7 @@ function loadQ(){
 
   let html="";
   q[i][1].forEach((o,index)=>{
-    html+=`<div class="option" onclick="check(${index})">${o}</div>`;
+    html+=`<div class="option" onclick="check(${index},this)">${o}</div>`;
   });
   document.getElementById("options").innerHTML=html;
 
@@ -297,17 +297,31 @@ function startTimer(){
   },1000);
 }
 
-function check(ans){
+function check(ans,el){
   clearInterval(timer);
 
   if(ans==q[i][2]){
-    score += (streak>0?2:1);
+    el.classList.add("correct");
+
+    if(streak>0){
+      score += 2;
+    } else {
+      score += 1;
+    }
+
     streak++;
+
+    el.innerHTML += ` <img src="https://raw.githubusercontent.com/itszavoo/images/main/chadg.jpeg" width="18">`;
+
   } else {
+    el.classList.add("wrong");
     streak=0;
   }
 
-  setTimeout(()=>{i++;loadQ();},500);
+  setTimeout(()=>{
+    i++;
+    loadQ();
+  },600);
 }
 
 function end(){

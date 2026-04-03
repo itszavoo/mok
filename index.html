@@ -158,26 +158,20 @@ body{
 
 /* IMAGE AREA */
 .card-top{
-  width:100%;
-  height:160px;
   display:flex;
   justify-content:center;
   align-items:center;
-  overflow:hidden;
+  height:140px;
 }
 
-/* SMALL IMAGES (mouse + chad) */
+/* DEFAULT IMAGE SIZE */
 .card-top img{
-  max-height:90px;   /* reduced size */
-  width:auto;
-  height:auto;
+  max-height:110px;
 }
 
-/* WINNER IMAGE FULL */
+/* BIG WINNER IMAGE */
 .big-img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+  max-height:140px !important;
 }
 
 /* TEXT */
@@ -207,7 +201,7 @@ body{
 
 /* GA ICON */
 #gaInside{
-  width:70px; /* bigger */
+  width:55px; /* bigger */
   position:absolute;
   right:10px;
   bottom:10px;
@@ -291,12 +285,12 @@ body{
     <!-- IMAGE -->
     <div id="resultImg" class="card-top"></div>
 
-<!-- LINE -->
-<div class="divider"></div>
+    <!-- TEXT -->
+    <h2 id="resultText"></h2>
 
-<!-- TEXT BELOW LINE -->
-<h2 id="resultText"></h2>
-    
+    <!-- LINE -->
+    <div class="divider"></div>
+
     <!-- SCORE + STREAK -->
     <div class="stats">
       <p id="finalScore"></p>

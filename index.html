@@ -153,10 +153,9 @@ body{
   width:320px;
   overflow:hidden;
   position:relative;
-  margin:0 auto; /* CENTER FIX */
+  margin:0 auto;
 }
 
-/* IMAGE AREA */
 .card-top{
   display:flex;
   justify-content:center;
@@ -164,17 +163,14 @@ body{
   height:140px;
 }
 
-/* DEFAULT IMAGE SIZE */
 .card-top img{
   max-height:110px;
 }
 
-/* BIG WINNER IMAGE */
 .big-img{
   max-height:140px !important;
 }
 
-/* TEXT */
 #resultText{
   font-weight:bold;
   font-size:22px;
@@ -182,7 +178,6 @@ body{
   margin:8px 0;
 }
 
-/* DIVIDER */
 .divider{
   width:90%;
   height:2px;
@@ -190,7 +185,6 @@ body{
   margin:6px auto;
 }
 
-/* STATS */
 .stats{
   font-weight:bold;
   font-size:18px;
@@ -199,9 +193,8 @@ body{
   padding-left:20px;
 }
 
-/* GA ICON */
 #gaInside{
-  width:55px; /* bigger */
+  width:55px;
   position:absolute;
   right:10px;
   bottom:10px;
@@ -222,15 +215,6 @@ body{
   background:black;
   color:white;
   font-weight:bold;
-}
-
-#leaderboard{
-  background:black;
-  color:white;
-  margin-top:20px;
-  padding:10px;
-  width:100%;
-  max-width:350px;
 }
 </style>
 </head>
@@ -282,34 +266,25 @@ body{
 
   <div class="card">
 
-    <!-- IMAGE -->
     <div id="resultImg" class="card-top"></div>
 
-    <!-- TEXT -->
     <h2 id="resultText"></h2>
 
-    <!-- LINE -->
     <div class="divider"></div>
 
-    <!-- SCORE + STREAK -->
     <div class="stats">
       <p id="finalScore"></p>
       <p id="finalStreak"></p>
     </div>
 
-    <!-- GA ICON -->
     <img id="gaInside" src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/gag.jpeg">
 
   </div>
 
-  <!-- INPUT + BUTTON -->
   <div style="margin-top:20px;">
     <input id="name" placeholder="Enter your name" class="inputBox">
     <button onclick="saveScore()" class="saveBtn">Save</button>
   </div>
-
-  <!-- LEADERBOARD -->
-  <div id="leaderboard"></div>
 
 </div>
 
@@ -422,30 +397,13 @@ function end(){
 
   document.getElementById("finalScore").innerText="Score: "+score+" / 20";
   document.getElementById("finalStreak").innerText="Streak: "+streak;
-
-  displayLeaderboard();
 }
+
 function saveScore(){
   let name=document.getElementById("name").value;
   if(!name)return;
 
-  let data=JSON.parse(localStorage.getItem("lb")||"[]");
-  data.push({name,score});
-  data.sort((a,b)=>b.score-a.score);
-
-  localStorage.setItem("lb",JSON.stringify(data));
-  displayLeaderboard();
-}
-
-function displayLeaderboard(){
-  let data=JSON.parse(localStorage.getItem("lb")||"[]");
-
-  let html="<h3>Leaderboard</h3>";
-  data.forEach((d,i)=>{
-    html+=`<p>${i+1}. ${d.name} - ${d.score}</p>`;
-  });
-
-  document.getElementById("leaderboard").innerHTML=html;
+  document.getElementById("resultText").innerText += " ("+name+")";
 }
 </script>
 

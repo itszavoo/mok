@@ -4,6 +4,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Grand Arena</title>
 
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
 <style>
 body{
   margin:0;
@@ -34,17 +36,12 @@ body{
   justify-content:center;
   text-align:center;
   padding:20px;
-  transition:all 0.4s ease;
 }
 
 #logo{
   width:260px;
   margin-bottom:35px;
   margin-top:-40px;
-}
-
-#quiz #logo{
-  margin-top:-60px;
 }
 
 /* BUTTON */
@@ -62,15 +59,7 @@ body{
   background:#00c853;
   border:2px solid black;
   border-radius:10px;
-  cursor:pointer;
   font-weight:bold;
-}
-
-.subtitle{
-  color:white;
-  font-weight:bold;
-  margin-top:16px;
-  font-size:18px;
 }
 
 /* QUIZ */
@@ -83,54 +72,13 @@ body{
   border-radius:14px;
 }
 
-#progressBarWrap{
-  width:100%;
-  height:8px;
-  background:#333;
-  border-radius:10px;
-  overflow:hidden;
-}
-
-#progressBar{
-  height:100%;
-  width:0%;
-  background:#00c853;
-  transition:0.4s;
-}
-
-#timerBarWrap{
-  width:100%;
-  height:6px;
-  background:#222;
-  border-radius:10px;
-  overflow:hidden;
-  margin-top:6px;
-}
-
-#timerBar{
-  height:100%;
-  width:100%;
-  background:#ff3b30;
-  transition:1s linear;
-}
-
-#question{
-  font-size:19px;
-  font-weight:bold;
-  margin:15px 0;
-}
-
 .option{
   background:white;
-  color:black;
   padding:14px;
   margin:10px 0;
   border-radius:10px;
   cursor:pointer;
-  transition:0.25s;
 }
-
-.option:hover{transform:scale(1.03);}
 
 .correct{
   background:#00c853 !important;
@@ -138,12 +86,6 @@ body{
 }
 
 .wrong{background:#ff3b30 !important;}
-
-.shake{animation:shake 0.25s;}
-@keyframes shake{
-  25%{transform:translateX(-4px);}
-  50%{transform:translateX(4px);}
-}
 
 /* SCORECARD */
 .card{
@@ -153,10 +95,9 @@ body{
   width:320px;
   overflow:hidden;
   position:relative;
-  margin:0 auto; /* CENTER FIX */
 }
 
-/* IMAGE AREA */
+/* IMAGE */
 .card-top{
   display:flex;
   justify-content:center;
@@ -164,25 +105,24 @@ body{
   height:140px;
 }
 
-/* DEFAULT IMAGE SIZE */
 .card-top img{
-  max-height:110px;
+  max-height:90px;
 }
 
-/* BIG WINNER IMAGE */
 .big-img{
-  max-height:140px !important;
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
 /* TEXT */
 #resultText{
   font-weight:bold;
   font-size:22px;
-  color:black;
-  margin:8px 0;
+  margin:10px 0;
 }
 
-/* DIVIDER */
+/* LINE */
 .divider{
   width:90%;
   height:2px;
@@ -194,14 +134,13 @@ body{
 .stats{
   font-weight:bold;
   font-size:18px;
-  color:black;
   text-align:left;
   padding-left:20px;
 }
 
 /* GA ICON */
 #gaInside{
-  width:55px; /* bigger */
+  width:70px;
   position:absolute;
   right:10px;
   bottom:10px;
@@ -222,15 +161,7 @@ body{
   background:black;
   color:white;
   font-weight:bold;
-}
-
-#leaderboard{
-  background:black;
-  color:white;
-  margin-top:20px;
-  padding:10px;
-  width:100%;
-  max-width:350px;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -248,204 +179,86 @@ body{
   <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/main/logo.jpeg">
 
   <div id="enterWrap">
-    <span class="sword">⚔️</span>
-    <button id="enterBtn" onclick="startQuiz()">Enter</button>
-    <span class="sword">⚔️</span>
-  </div>
-
-  <div class="subtitle">
-    Only the strongest qualify 
-    <img src="https://raw.githubusercontent.com/itszavoo/images/main/chadb.jpeg" width="36">
+    ⚔️ <button id="enterBtn" onclick="startQuiz()">Enter</button> ⚔️
   </div>
 </div>
 
 <!-- QUIZ -->
 <div id="quiz" class="section" style="display:none;">
-  <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/main/logo.jpeg">
-
   <div class="box">
-
-    <div id="progressBarWrap"><div id="progressBar"></div></div>
-    <div id="timerBarWrap"><div id="timerBar"></div></div>
-
-    <div id="progress"></div>
-    <div id="timer"></div>
-    <div id="streak"></div>
     <div id="question"></div>
     <div id="options"></div>
-
   </div>
 </div>
 
 <!-- SCORE -->
-<div id="scoreCard" class="section" style="display:none; padding-top:40px;">
+<div id="scoreCard" class="section" style="display:none;">
 
   <div class="card">
 
-    <!-- IMAGE -->
     <div id="resultImg" class="card-top"></div>
 
-    <!-- LINE -->
-<div class="divider"></div>
+    <div class="divider"></div>
 
-<!-- TEXT BELOW LINE -->
-<h2 id="resultText"></h2>
+    <h2 id="resultText"></h2>
 
-    <!-- SCORE + STREAK -->
     <div class="stats">
       <p id="finalScore"></p>
       <p id="finalStreak"></p>
     </div>
 
-    <!-- GA ICON -->
-    <img id="gaInside" src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/gag.jpeg">
+    <img id="gaInside" src="https://raw.githubusercontent.com/itszavoo/images/main/gag.jpeg">
 
   </div>
 
-  <!-- INPUT + BUTTON -->
-  <div style="margin-top:20px;">
-    <input id="name" placeholder="Enter your name" class="inputBox">
-    <button onclick="saveScore()" class="saveBtn">Save</button>
-  </div>
-
-  <!-- LEADERBOARD -->
-  <div id="leaderboard"></div>
+  <input id="name" placeholder="Enter your name" class="inputBox">
+  <button onclick="saveScore()" class="saveBtn">Save</button>
+  <button onclick="downloadCard()" class="saveBtn">Download Card</button>
 
 </div>
 
 <script>
-let q = [
-["Total number of Scheme cards in Grand Arena?",["32","35","38"],1],
-["If a lineup uses a Scheme card that rewards rarity diversity, what is the optimal lineup structure?",["Full Legendary","Mixed rarity (one of each tier)","Random lineup"],1],
-["What does Fortitude mainly affect?",["Damage","Respawn and deposit time","Speed"],1],
-["Which Scheme card benefits from unique categories in a lineup?",["Whale Watching","Collect ’Em All","Power Play"],1],
-["Which stat is least likely tied to defensive mechanics?",["Fortitude","Dexterity","Endurance"],1],
-["Which rarity card gives a 1.75x points multiplier?",["Epic","Rare","Legendary"],2],
-["Which stat would help maintain performance consistency across matches?",["Endurance","Strength","Fortitude"],2],
-["Which contest type is best for consistent returns over time?",["Top 20%","50/50","Free"],1],
-["What matters most in Grand Arena at high level?",["Card rarity","Number of entries","Decision making quality"],2],
-["Does higher rarity always mean better contest performance?",["Yes","No","Mostly"],1]
-];
-
-let i=0, score=0, streak=0;
-let timerInterval;
+let score=16, streak=4;
 
 function startQuiz(){
   document.getElementById("home").style.display="none";
   document.getElementById("quiz").style.display="flex";
-  loadQ();
-}
-
-function loadQ(){
-  if(i>=q.length){end();return;}
-
-  document.getElementById("question").innerText=q[i][0];
-  document.getElementById("progress").innerText=(i+1)+"/10";
-  document.getElementById("streak").innerText="Streak: "+streak;
-
-  document.getElementById("progressBar").style.width=(i/q.length)*100+"%";
-
-  let html="";
-  q[i][1].forEach((o,index)=>{
-    html+=`<div class="option" onclick="check(${index},this)">${o}</div>`;
-  });
-
-  document.getElementById("options").innerHTML=html;
-
-  startTimer();
-}
-
-function startTimer(){
-  clearInterval(timerInterval);
-
-  let time=20;
-  document.getElementById("timer").innerText="Time: "+time;
-  document.getElementById("timerBar").style.width="100%";
-
-  timerInterval=setInterval(()=>{
-    time--;
-    document.getElementById("timer").innerText="Time: "+time;
-    document.getElementById("timerBar").style.width=(time/20)*100+"%";
-
-    if(time<=0){
-      clearInterval(timerInterval);
-      streak=0;
-      i++;
-      loadQ();
-    }
-  },1000);
-}
-
-function check(ans,el){
-  clearInterval(timerInterval);
-
-  if(ans==q[i][2]){
-    el.classList.add("correct","shake");
-
-    if(streak>0){score+=2;} else{score+=1;}
-    streak++;
-
-    el.innerHTML+=` <img src="https://raw.githubusercontent.com/itszavoo/images/main/chadg.jpeg" width="18">`;
-
-  } else {
-    el.classList.add("wrong","shake");
-    streak=0;
-  }
-
-  setTimeout(()=>{i++;loadQ();},700);
+  setTimeout(end,1000);
 }
 
 function end(){
   document.getElementById("quiz").style.display="none";
   document.getElementById("scoreCard").style.display="flex";
 
-  let img,text,isBig=false;
-
-  if(score < 10){
-    img="https://raw.githubusercontent.com/itszavoo/images/main/mouse.jpeg";
-    text="Rookie !!";
-  }
-  else if(score < 15){
-    img="https://raw.githubusercontent.com/itszavoo/images/main/chadg.jpeg";
-    text="GA Chad !!";
-  }
-  else{
-    img="https://raw.githubusercontent.com/itszavoo/images/main/winner.jpeg";
-    text="GA Legend !!";
-    isBig = true;
-  }
+  let img="https://raw.githubusercontent.com/itszavoo/images/main/winner.jpeg";
+  let text="GA Legend !!";
 
   document.getElementById("resultImg").innerHTML =
-    `<img src="${img}" class="${isBig ? 'big-img' : ''}">`;
+    `<img src="${img}" class="big-img">`;
 
   document.getElementById("resultText").innerText=text;
 
   document.getElementById("finalScore").innerText="Score: "+score+" / 20";
   document.getElementById("finalStreak").innerText="Streak: "+streak;
-
-  displayLeaderboard();
 }
+
 function saveScore(){
   let name=document.getElementById("name").value;
   if(!name)return;
 
-  let data=JSON.parse(localStorage.getItem("lb")||"[]");
-  data.push({name,score});
-  data.sort((a,b)=>b.score-a.score);
-
-  localStorage.setItem("lb",JSON.stringify(data));
-  displayLeaderboard();
+  let current = document.getElementById("resultText").innerText;
+  document.getElementById("resultText").innerText = current + " (" + name + ")";
 }
 
-function displayLeaderboard(){
-  let data=JSON.parse(localStorage.getItem("lb")||"[]");
+function downloadCard(){
+  const card=document.querySelector(".card");
 
-  let html="<h3>Leaderboard</h3>";
-  data.forEach((d,i)=>{
-    html+=`<p>${i+1}. ${d.name} - ${d.score}</p>`;
+  html2canvas(card).then(canvas=>{
+    const link=document.createElement("a");
+    link.download="GA-scorecard.png";
+    link.href=canvas.toDataURL();
+    link.click();
   });
-
-  document.getElementById("leaderboard").innerHTML=html;
 }
 </script>
 

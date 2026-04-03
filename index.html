@@ -34,7 +34,6 @@ body{
   justify-content:center;
   text-align:center;
   padding:20px;
-  transition:all 0.4s ease;
 }
 
 #logo{
@@ -53,8 +52,6 @@ body{
   align-items:center;
   gap:12px;
 }
-
-.sword{font-size:22px;}
 
 #enterBtn{
   padding:14px 36px;
@@ -127,23 +124,13 @@ body{
   margin:10px 0;
   border-radius:10px;
   cursor:pointer;
-  transition:0.25s;
 }
-
-.option:hover{transform:scale(1.03);}
 
 .correct{
   background:#00c853 !important;
-  box-shadow:0 0 12px #00ff88;
 }
 
 .wrong{background:#ff3b30 !important;}
-
-.shake{animation:shake 0.25s;}
-@keyframes shake{
-  25%{transform:translateX(-4px);}
-  50%{transform:translateX(4px);}
-}
 
 /* SCORECARD */
 .card{
@@ -153,7 +140,6 @@ body{
   width:320px;
   overflow:hidden;
   position:relative;
-  margin:0 auto;
 }
 
 .card-top{
@@ -175,7 +161,6 @@ body{
   font-weight:bold;
   font-size:22px;
   color:black;
-  margin:8px 0;
 }
 
 .divider{
@@ -199,47 +184,21 @@ body{
   right:10px;
   bottom:10px;
 }
-
-.inputBox{
-  margin-top:15px;
-  padding:10px;
-  border-radius:8px;
-  border:none;
-}
-
-.saveBtn{
-  margin-top:10px;
-  padding:10px 20px;
-  border:none;
-  border-radius:8px;
-  background:black;
-  color:white;
-  font-weight:bold;
-}
 </style>
 </head>
 
 <body>
-
-<img id="moku" class="corner" src="https://raw.githubusercontent.com/itszavoo/mokutm/main/moku.png">
-<img id="ga" class="corner" src="https://raw.githubusercontent.com/itszavoo/images/main/ga.jpeg">
-<img id="star" class="corner" src="https://raw.githubusercontent.com/itszavoo/images/main/star.jpeg">
-
-<div id="watermark">Made by Zavo</div>
 
 <!-- HOME -->
 <div id="home" class="section">
   <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/main/logo.jpeg">
 
   <div id="enterWrap">
-    <span class="sword">⚔️</span>
     <button id="enterBtn" onclick="startQuiz()">Enter</button>
-    <span class="sword">⚔️</span>
   </div>
 
   <div class="subtitle">
     Only the strongest qualify 
-    <img src="https://raw.githubusercontent.com/itszavoo/images/main/chadb.jpeg" width="36">
   </div>
 </div>
 
@@ -248,7 +207,6 @@ body{
   <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/main/logo.jpeg">
 
   <div class="box">
-
     <div id="progressBarWrap"><div id="progressBar"></div></div>
     <div id="timerBarWrap"><div id="timerBar"></div></div>
 
@@ -257,68 +215,123 @@ body{
     <div id="streak"></div>
     <div id="question"></div>
     <div id="options"></div>
-
   </div>
 </div>
 
 <!-- SCORE -->
-<div id="scoreCard" class="section" style="display:none; padding-top:40px;">
+<div id="scoreCard" class="section" style="display:none;">
 
   <div class="card">
-
     <div id="resultImg" class="card-top"></div>
 
-    <h2 id="resultText"></h2>
-
     <div class="divider"></div>
+
+    <h2 id="resultText"></h2>
 
     <div class="stats">
       <p id="finalScore"></p>
       <p id="finalStreak"></p>
     </div>
 
-    <img id="gaInside" src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/gag.jpeg">
-
+    <img id="gaInside" src="https://raw.githubusercontent.com/itszavoo/images/main/gag.jpeg">
   </div>
 
-  <div style="margin-top:20px;">
-    <input id="name" placeholder="Enter your name" class="inputBox">
-    <button onclick="saveScore()" class="saveBtn">Save</button>
-  </div>
+  <input id="name" placeholder="Enter your name">
+  <button onclick="saveScore()">Save</button>
 
 </div>
 
 <script>
-let q = [...]; // your same questions remain unchanged
 
-// EVERYTHING SAME — just removed leaderboard logic
+let q = [
+["Total number of Scheme cards in Grand Arena?",["32","35","38"],1],
+["If a lineup uses a Scheme card that rewards rarity diversity, what is the optimal lineup structure?",["Full Legendary","Mixed rarity (one of each tier)","Random lineup"],1],
+["What does Fortitude mainly affect?",["Damage","Respawn and deposit time","Speed"],1],
+["Which Scheme card benefits from unique categories in a lineup?",["Whale Watching","Collect ’Em All","Power Play"],1],
+["Which stat is least likely tied to defensive mechanics?",["Fortitude","Dexterity","Endurance"],1],
+["Which rarity card gives a 1.75x points multiplier?",["Epic","Rare","Legendary"],2],
+["Which stat would help maintain performance consistency across matches?",["Endurance","Strength","Fortitude"],2],
+["Which contest type is best for consistent returns over time?",["Top 20%","50/50","Free"],1],
+["What matters most in Grand Arena at high level?",["Card rarity","Number of entries","Decision making quality"],2],
+["Does higher rarity always mean better contest performance?",["Yes","No","Mostly"],1]
+];
+
+let i=0, score=0, streak=0, timer;
+
+function startQuiz(){
+  document.getElementById("home").style.display="none";
+  document.getElementById("quiz").style.display="flex";
+  loadQ();
+}
+
+function loadQ(){
+  if(i>=q.length){end();return;}
+
+  document.getElementById("question").innerText=q[i][0];
+  document.getElementById("progress").innerText=(i+1)+"/10";
+  document.getElementById("streak").innerText="Streak: "+streak;
+
+  let html="";
+  q[i][1].forEach((o,index)=>{
+    html+=`<div class="option" onclick="check(${index})">${o}</div>`;
+  });
+  document.getElementById("options").innerHTML=html;
+
+  startTimer();
+}
+
+function startTimer(){
+  clearInterval(timer);
+  let t=20;
+  document.getElementById("timer").innerText="Time: "+t;
+
+  timer=setInterval(()=>{
+    t--;
+    document.getElementById("timer").innerText="Time: "+t;
+    if(t<=0){
+      clearInterval(timer);
+      streak=0;
+      i++;
+      loadQ();
+    }
+  },1000);
+}
+
+function check(ans){
+  clearInterval(timer);
+
+  if(ans==q[i][2]){
+    score += (streak>0?2:1);
+    streak++;
+  } else {
+    streak=0;
+  }
+
+  setTimeout(()=>{i++;loadQ();},500);
+}
 
 function end(){
   document.getElementById("quiz").style.display="none";
   document.getElementById("scoreCard").style.display="flex";
 
-  let img,text,isBig=false;
+  let img,text;
 
-  if(score < 10){
+  if(score<10){
     img="https://raw.githubusercontent.com/itszavoo/images/main/mouse.jpeg";
     text="Rookie !!";
   }
-  else if(score < 15){
+  else if(score<15){
     img="https://raw.githubusercontent.com/itszavoo/images/main/chadg.jpeg";
     text="GA Chad !!";
   }
   else{
     img="https://raw.githubusercontent.com/itszavoo/images/main/winner.jpeg";
     text="GA Legend !!";
-    isBig = true;
   }
 
-  document.getElementById("resultImg").innerHTML =
-    `<img src="${img}" class="${isBig ? 'big-img' : ''}">`;
-
+  document.getElementById("resultImg").innerHTML=`<img src="${img}">`;
   document.getElementById("resultText").innerText=text;
-
-  document.getElementById("finalScore").innerText="Score: "+score+" / 20";
+  document.getElementById("finalScore").innerText="Score: "+score+"/20";
   document.getElementById("finalStreak").innerText="Streak: "+streak;
 }
 
@@ -328,6 +341,7 @@ function saveScore(){
 
   document.getElementById("resultText").innerText += " ("+name+")";
 }
+
 </script>
 
 </body>

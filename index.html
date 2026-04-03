@@ -34,6 +34,7 @@ body{
   justify-content:center;
   text-align:center;
   padding:20px;
+  transition:all 0.4s ease;
 }
 
 #logo{
@@ -52,6 +53,8 @@ body{
   align-items:center;
   gap:12px;
 }
+
+.sword{font-size:22px;}
 
 #enterBtn{
   padding:14px 36px;
@@ -124,13 +127,23 @@ body{
   margin:10px 0;
   border-radius:10px;
   cursor:pointer;
+  transition:0.25s;
 }
+
+.option:hover{transform:scale(1.03);}
 
 .correct{
   background:#00c853 !important;
+  box-shadow:0 0 12px #00ff88;
 }
 
 .wrong{background:#ff3b30 !important;}
+
+.shake{animation:shake 0.25s;}
+@keyframes shake{
+  25%{transform:translateX(-4px);}
+  50%{transform:translateX(4px);}
+}
 
 /* SCORECARD */
 .card{
@@ -140,8 +153,10 @@ body{
   width:320px;
   overflow:hidden;
   position:relative;
+  margin:0 auto; /* CENTER FIX */
 }
 
+/* IMAGE AREA */
 .card-top{
   display:flex;
   justify-content:center;
@@ -149,20 +164,25 @@ body{
   height:140px;
 }
 
+/* DEFAULT IMAGE SIZE */
 .card-top img{
   max-height:110px;
 }
 
+/* BIG WINNER IMAGE */
 .big-img{
   max-height:140px !important;
 }
 
+/* TEXT */
 #resultText{
   font-weight:bold;
   font-size:22px;
   color:black;
+  margin:8px 0;
 }
 
+/* DIVIDER */
 .divider{
   width:90%;
   height:2px;
@@ -170,6 +190,7 @@ body{
   margin:6px auto;
 }
 
+/* STATS */
 .stats{
   font-weight:bold;
   font-size:18px;
@@ -178,27 +199,63 @@ body{
   padding-left:20px;
 }
 
+/* GA ICON */
 #gaInside{
-  width:55px;
+  width:55px; /* bigger */
   position:absolute;
   right:10px;
   bottom:10px;
+}
+
+.inputBox{
+  margin-top:15px;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+}
+
+.saveBtn{
+  margin-top:10px;
+  padding:10px 20px;
+  border:none;
+  border-radius:8px;
+  background:black;
+  color:white;
+  font-weight:bold;
+}
+
+#leaderboard{
+  background:black;
+  color:white;
+  margin-top:20px;
+  padding:10px;
+  width:100%;
+  max-width:350px;
 }
 </style>
 </head>
 
 <body>
 
+<img id="moku" class="corner" src="https://raw.githubusercontent.com/itszavoo/mokutm/main/moku.png">
+<img id="ga" class="corner" src="https://raw.githubusercontent.com/itszavoo/images/main/ga.jpeg">
+<img id="star" class="corner" src="https://raw.githubusercontent.com/itszavoo/images/main/star.jpeg">
+
+<div id="watermark">Made by Zavo</div>
+
 <!-- HOME -->
 <div id="home" class="section">
   <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/main/logo.jpeg">
 
   <div id="enterWrap">
+    <span class="sword">⚔️</span>
     <button id="enterBtn" onclick="startQuiz()">Enter</button>
+    <span class="sword">⚔️</span>
   </div>
 
   <div class="subtitle">
     Only the strongest qualify 
+    <img src="https://raw.githubusercontent.com/itszavoo/images/main/chadb.jpeg" width="36">
   </div>
 </div>
 
@@ -207,6 +264,7 @@ body{
   <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/main/logo.jpeg">
 
   <div class="box">
+
     <div id="progressBarWrap"><div id="progressBar"></div></div>
     <div id="timerBarWrap"><div id="timerBar"></div></div>
 
@@ -215,34 +273,47 @@ body{
     <div id="streak"></div>
     <div id="question"></div>
     <div id="options"></div>
+
   </div>
 </div>
 
 <!-- SCORE -->
-<div id="scoreCard" class="section" style="display:none;">
+<div id="scoreCard" class="section" style="display:none; padding-top:40px;">
 
   <div class="card">
+
+    <!-- IMAGE -->
     <div id="resultImg" class="card-top"></div>
 
-    <div class="divider"></div>
-
+    <!-- TEXT -->
     <h2 id="resultText"></h2>
 
+    <!-- LINE -->
+    <div class="divider"></div>
+
+    <!-- SCORE + STREAK -->
     <div class="stats">
       <p id="finalScore"></p>
       <p id="finalStreak"></p>
     </div>
 
-    <img id="gaInside" src="https://raw.githubusercontent.com/itszavoo/images/main/gag.jpeg">
+    <!-- GA ICON -->
+    <img id="gaInside" src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/gag.jpeg">
+
   </div>
 
-  <input id="name" placeholder="Enter your name">
-  <button onclick="saveScore()">Save</button>
+  <!-- INPUT + BUTTON -->
+  <div style="margin-top:20px;">
+    <input id="name" placeholder="Enter your name" class="inputBox">
+    <button onclick="saveScore()" class="saveBtn">Save</button>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div id="leaderboard"></div>
 
 </div>
 
 <script>
-
 let q = [
 ["Total number of Scheme cards in Grand Arena?",["32","35","38"],1],
 ["If a lineup uses a Scheme card that rewards rarity diversity, what is the optimal lineup structure?",["Full Legendary","Mixed rarity (one of each tier)","Random lineup"],1],
@@ -256,7 +327,8 @@ let q = [
 ["Does higher rarity always mean better contest performance?",["Yes","No","Mostly"],1]
 ];
 
-let i=0, score=0, streak=0, timer;
+let i=0, score=0, streak=0;
+let timerInterval;
 
 function startQuiz(){
   document.getElementById("home").style.display="none";
@@ -271,25 +343,32 @@ function loadQ(){
   document.getElementById("progress").innerText=(i+1)+"/10";
   document.getElementById("streak").innerText="Streak: "+streak;
 
+  document.getElementById("progressBar").style.width=(i/q.length)*100+"%";
+
   let html="";
   q[i][1].forEach((o,index)=>{
     html+=`<div class="option" onclick="check(${index},this)">${o}</div>`;
   });
+
   document.getElementById("options").innerHTML=html;
 
   startTimer();
 }
 
 function startTimer(){
-  clearInterval(timer);
-  let t=20;
-  document.getElementById("timer").innerText="Time: "+t;
+  clearInterval(timerInterval);
 
-  timer=setInterval(()=>{
-    t--;
-    document.getElementById("timer").innerText="Time: "+t;
-    if(t<=0){
-      clearInterval(timer);
+  let time=20;
+  document.getElementById("timer").innerText="Time: "+time;
+  document.getElementById("timerBar").style.width="100%";
+
+  timerInterval=setInterval(()=>{
+    time--;
+    document.getElementById("timer").innerText="Time: "+time;
+    document.getElementById("timerBar").style.width=(time/20)*100+"%";
+
+    if(time<=0){
+      clearInterval(timerInterval);
       streak=0;
       i++;
       loadQ();
@@ -298,64 +377,76 @@ function startTimer(){
 }
 
 function check(ans,el){
-  clearInterval(timer);
+  clearInterval(timerInterval);
 
   if(ans==q[i][2]){
-    el.classList.add("correct");
+    el.classList.add("correct","shake");
 
-    if(streak>0){
-      score += 2;
-    } else {
-      score += 1;
-    }
-
+    if(streak>0){score+=2;} else{score+=1;}
     streak++;
 
-    el.innerHTML += ` <img src="https://raw.githubusercontent.com/itszavoo/images/main/chadg.jpeg" width="18">`;
+    el.innerHTML+=` <img src="https://raw.githubusercontent.com/itszavoo/images/main/chadg.jpeg" width="18">`;
 
   } else {
-    el.classList.add("wrong");
+    el.classList.add("wrong","shake");
     streak=0;
   }
 
-  setTimeout(()=>{
-    i++;
-    loadQ();
-  },600);
+  setTimeout(()=>{i++;loadQ();},700);
 }
 
 function end(){
   document.getElementById("quiz").style.display="none";
   document.getElementById("scoreCard").style.display="flex";
 
-  let img,text;
+  let img,text,isBig=false;
 
-  if(score<10){
+  if(score < 10){
     img="https://raw.githubusercontent.com/itszavoo/images/main/mouse.jpeg";
     text="Rookie !!";
   }
-  else if(score<15){
+  else if(score < 15){
     img="https://raw.githubusercontent.com/itszavoo/images/main/chadg.jpeg";
     text="GA Chad !!";
   }
   else{
     img="https://raw.githubusercontent.com/itszavoo/images/main/winner.jpeg";
     text="GA Legend !!";
+    isBig = true;
   }
 
-  document.getElementById("resultImg").innerHTML=`<img src="${img}">`;
-  document.getElementById("resultText").innerText=text;
-  document.getElementById("finalScore").innerText="Score: "+score+"/20";
-  document.getElementById("finalStreak").innerText="Streak: "+streak;
-}
+  document.getElementById("resultImg").innerHTML =
+    `<img src="${img}" class="${isBig ? 'big-img' : ''}">`;
 
+  document.getElementById("resultText").innerText=text;
+
+  document.getElementById("finalScore").innerText="Score: "+score+" / 20";
+  document.getElementById("finalStreak").innerText="Streak: "+streak;
+
+  displayLeaderboard();
+}
 function saveScore(){
   let name=document.getElementById("name").value;
   if(!name)return;
 
-  document.getElementById("resultText").innerText += " ("+name+")";
+  let data=JSON.parse(localStorage.getItem("lb")||"[]");
+  data.push({name,score});
+  data.sort((a,b)=>b.score-a.score);
+
+  localStorage.setItem("lb",JSON.stringify(data));
+  displayLeaderboard();
 }
 
+function displayLeaderboard(){
+  let data=JSON.parse(localStorage.getItem("lb")||"[]");
+
+  let html="<h3>Leaderboard</h3>";
+  data.forEach((d,i)=>{
+    html+=`<p>${i+1}. ${d.name} - ${d.score}</p>`;
+  });
+
+  document.getElementById("leaderboard").innerHTML=html;
+}
 </script>
 
 </body>

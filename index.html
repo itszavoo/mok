@@ -5,13 +5,13 @@
 <title>Grand Arena</title>
 
 <style>
-/* SAME CSS — UNCHANGED */
 body{
   margin:0;
   font-family:Arial;
   background:#2673E8;
 }
 
+/* CORNERS */
 .corner{position:fixed;z-index:10;}
 #moku{top:12px;left:12px;width:70px;}
 #ga{top:12px;right:12px;width:70px;}
@@ -25,6 +25,7 @@ body{
   font-weight:bold;
 }
 
+/* CENTER */
 .section{
   min-height:100vh;
   display:flex;
@@ -33,6 +34,7 @@ body{
   justify-content:center;
   text-align:center;
   padding:20px;
+  transition:all 0.4s ease;
 }
 
 #logo{
@@ -45,6 +47,7 @@ body{
   margin-top:-60px;
 }
 
+/* BUTTON */
 #enterWrap{
   display:flex;
   align-items:center;
@@ -70,6 +73,7 @@ body{
   font-size:18px;
 }
 
+/* QUIZ */
 .box{
   background:black;
   color:white;
@@ -91,6 +95,7 @@ body{
   height:100%;
   width:0%;
   background:#00c853;
+  transition:0.4s;
 }
 
 #timerBarWrap{
@@ -106,6 +111,13 @@ body{
   height:100%;
   width:100%;
   background:#ff3b30;
+  transition:1s linear;
+}
+
+#question{
+  font-size:19px;
+  font-weight:bold;
+  margin:15px 0;
 }
 
 .option{
@@ -115,7 +127,10 @@ body{
   margin:10px 0;
   border-radius:10px;
   cursor:pointer;
+  transition:0.25s;
 }
+
+.option:hover{transform:scale(1.03);}
 
 .correct{
   background:#00c853 !important;
@@ -124,6 +139,13 @@ body{
 
 .wrong{background:#ff3b30 !important;}
 
+.shake{animation:shake 0.25s;}
+@keyframes shake{
+  25%{transform:translateX(-4px);}
+  50%{transform:translateX(4px);}
+}
+
+/* SCORECARD */
 .card{
   background:#00c853;
   border:3px solid black;
@@ -131,6 +153,7 @@ body{
   width:320px;
   overflow:hidden;
   position:relative;
+  margin:0 auto;
 }
 
 .card-top{
@@ -151,6 +174,8 @@ body{
 #resultText{
   font-weight:bold;
   font-size:22px;
+  color:black;
+  margin:8px 0;
 }
 
 .divider{
@@ -163,6 +188,7 @@ body{
 .stats{
   font-weight:bold;
   font-size:18px;
+  color:black;
   text-align:left;
   padding-left:20px;
 }
@@ -177,14 +203,18 @@ body{
 .inputBox{
   margin-top:15px;
   padding:10px;
+  border-radius:8px;
+  border:none;
 }
 
 .saveBtn{
   margin-top:10px;
   padding:10px 20px;
+  border:none;
+  border-radius:8px;
   background:black;
   color:white;
-  border:none;
+  font-weight:bold;
 }
 </style>
 </head>
@@ -201,7 +231,16 @@ body{
 <div id="home" class="section">
   <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/main/logo.jpeg">
 
-  <button id="enterBtn" onclick="startQuiz()">Enter</button>
+  <div id="enterWrap">
+    <span class="sword">⚔️</span>
+    <button id="enterBtn" onclick="startQuiz()">Enter</button>
+    <span class="sword">⚔️</span>
+  </div>
+
+  <div class="subtitle">
+    Only the strongest qualify 
+    <img src="https://raw.githubusercontent.com/itszavoo/images/main/chadb.jpeg" width="36">
+  </div>
 </div>
 
 <!-- QUIZ -->
@@ -209,20 +248,28 @@ body{
   <img id="logo" src="https://raw.githubusercontent.com/itszavoo/images/main/logo.jpeg">
 
   <div class="box">
+
+    <div id="progressBarWrap"><div id="progressBar"></div></div>
+    <div id="timerBarWrap"><div id="timerBar"></div></div>
+
     <div id="progress"></div>
     <div id="timer"></div>
     <div id="streak"></div>
     <div id="question"></div>
     <div id="options"></div>
+
   </div>
 </div>
 
 <!-- SCORE -->
-<div id="scoreCard" class="section" style="display:none;">
+<div id="scoreCard" class="section" style="display:none; padding-top:40px;">
 
   <div class="card">
+
     <div id="resultImg" class="card-top"></div>
+
     <h2 id="resultText"></h2>
+
     <div class="divider"></div>
 
     <div class="stats">
@@ -230,14 +277,16 @@ body{
       <p id="finalStreak"></p>
     </div>
 
-    <img id="gaInside" src="https://raw.githubusercontent.com/itszavoo/images/main/gag.jpeg">
+    <img id="gaInside" src="https://raw.githubusercontent.com/itszavoo/images/refs/heads/main/gag.jpeg">
+
   </div>
 
-  <input id="name" placeholder="Enter your name" class="inputBox">
-  <button onclick="saveScore()" class="saveBtn">Save</button>
-
-  <!-- NEW BUTTON -->
-  <button onclick="downloadCard()" class="saveBtn">Download Card</button>
+  <div style="margin-top:20px;">
+    <input id="name" placeholder="Enter your name" class="inputBox">
+    <button onclick="saveScore()" class="saveBtn">Save</button>
+    <!-- DOWNLOAD BUTTON -->
+    <button onclick="downloadCard()" class="saveBtn">Download Card</button>
+  </div>
 
 </div>
 
@@ -255,89 +304,130 @@ let q = [
 ["Does higher rarity always mean better contest performance?",["Yes","No","Mostly"],1]
 ];
 
-let i=0, score=0, streak=0, timer;
+let i=0, score=0, streak=0;
+let timerInterval;
 
 function startQuiz(){
-  home.style.display="none";
-  quiz.style.display="flex";
+  document.getElementById("home").style.display="none";
+  document.getElementById("quiz").style.display="flex";
   loadQ();
 }
 
 function loadQ(){
   if(i>=q.length){end();return;}
 
-  question.innerText=q[i][0];
-  streak.innerText="Streak: "+streak;
+  document.getElementById("question").innerText=q[i][0];
+  document.getElementById("progress").innerText=(i+1)+"/10";
+  document.getElementById("streak").innerText="Streak: "+streak;
+
+  document.getElementById("progressBar").style.width=(i/q.length)*100+"%";
 
   let html="";
   q[i][1].forEach((o,index)=>{
     html+=`<div class="option" onclick="check(${index},this)">${o}</div>`;
   });
 
-  options.innerHTML=html;
+  document.getElementById("options").innerHTML=html;
+
+  startTimer();
+}
+
+function startTimer(){
+  clearInterval(timerInterval);
+
+  let time=20;
+  document.getElementById("timer").innerText="Time: "+time;
+  document.getElementById("timerBar").style.width="100%";
+
+  timerInterval=setInterval(()=>{
+    time--;
+    document.getElementById("timer").innerText="Time: "+time;
+    document.getElementById("timerBar").style.width=(time/20)*100+"%";
+
+    if(time<=0){
+      clearInterval(timerInterval);
+      streak=0;
+      i++;
+      loadQ();
+    }
+  },1000);
 }
 
 function check(ans,el){
+  clearInterval(timerInterval);
+
   if(ans==q[i][2]){
-    el.classList.add("correct");
-    score += (streak>0?2:1);
+    el.classList.add("correct","shake");
+
+    if(streak>0){score+=2;} else{score+=1;}
     streak++;
+
+    el.innerHTML+=` <img src="https://raw.githubusercontent.com/itszavoo/images/main/chadg.jpeg" width="18">`;
+
   } else {
-    el.classList.add("wrong");
+    el.classList.add("wrong","shake");
     streak=0;
   }
 
-  setTimeout(()=>{i++;loadQ();},500);
+  setTimeout(()=>{i++;loadQ();},700);
 }
 
 function end(){
-  quiz.style.display="none";
-  scoreCard.style.display="flex";
+  document.getElementById("quiz").style.display="none";
+  document.getElementById("scoreCard").style.display="flex";
 
-  let img,text;
+  let img,text,isBig=false;
 
-  if(score<10){
+  if(score < 10){
     img="https://raw.githubusercontent.com/itszavoo/images/main/mouse.jpeg";
     text="Rookie !!";
   }
-  else if(score<15){
+  else if(score < 15){
     img="https://raw.githubusercontent.com/itszavoo/images/main/chadg.jpeg";
     text="GA Chad !!";
   }
   else{
     img="https://raw.githubusercontent.com/itszavoo/images/main/winner.jpeg";
     text="GA Legend !!";
+    isBig = true;
   }
 
-  resultImg.innerHTML=`<img src="${img}">`;
-  resultText.innerText=text;
-  finalScore.innerText="Score: "+score+" / 20";
-  finalStreak.innerText="Streak: "+streak;
+  document.getElementById("resultImg").innerHTML =
+    `<img src="${img}" class="${isBig ? 'big-img' : ''}" crossorigin="anonymous">`;
+
+  document.getElementById("resultText").innerText=text;
+
+  document.getElementById("finalScore").innerText="Score: "+score+" / 20";
+  document.getElementById("finalStreak").innerText="Streak: "+streak;
 }
 
-/* UPDATED NAME FUNCTION */
+/* NAME FIX */
 function saveScore(){
   let name=document.getElementById("name").value;
   if(!name)return;
 
-  let txt=resultText.innerText;
+  let txt=document.getElementById("resultText").innerText;
   if(!txt.includes("(")){
-    resultText.innerText = txt + " ("+name+")";
+    document.getElementById("resultText").innerText = txt + " ("+name+")";
   }
 }
 
-/* DOWNLOAD FUNCTION */
+/* DOWNLOAD FIX */
 function downloadCard(){
-  html2canvas(document.querySelector(".card")).then(canvas=>{
+  let card=document.querySelector(".card");
+
+  html2canvas(card,{
+    useCORS:true,
+    allowTaint:true
+  }).then(canvas=>{
     let link=document.createElement("a");
-    link.download="scorecard.png";
-    link.href=canvas.toDataURL();
+    link.download="GrandArenaScore.png";
+    link.href=canvas.toDataURL("image/png");
     link.click();
   });
 }
 </script>
 
-<!-- REQUIRED -->
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 </body>

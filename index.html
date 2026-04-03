@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Grand Arena</title>
 
+<!-- DOWNLOAD LIB -->
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
@@ -218,23 +219,65 @@ body{
 </div>
 
 <script>
-let score=16, streak=4;
+let q = [
+["Total number of Scheme cards in Grand Arena?",["32","35","38"],1],
+["If a lineup uses a Scheme card that rewards rarity diversity, what is the optimal lineup structure?",["Full Legendary","Mixed rarity (one of each tier)","Random lineup"],1]
+];
+
+let i=0, score=0, streak=0;
 
 function startQuiz(){
   document.getElementById("home").style.display="none";
   document.getElementById("quiz").style.display="flex";
-  setTimeout(end,1000);
+  loadQ();
+}
+
+function loadQ(){
+  if(i>=q.length){end();return;}
+
+  document.getElementById("question").innerText=q[i][0];
+
+  let html="";
+  q[i][1].forEach((o,index)=>{
+    html+=`<div class="option" onclick="check(${index},this)">${o}</div>`;
+  });
+
+  document.getElementById("options").innerHTML=html;
+}
+
+function check(ans,el){
+  if(ans==q[i][2]){
+    score+=1;
+    streak++;
+  } else {
+    streak=0;
+  }
+  i++;
+  loadQ();
 }
 
 function end(){
   document.getElementById("quiz").style.display="none";
   document.getElementById("scoreCard").style.display="flex";
 
-  let img="https://raw.githubusercontent.com/itszavoo/images/main/winner.jpeg";
-  let text="GA Legend !!";
+  let img,text,isBig=false;
+
+  if(score < 1){
+    img="https://raw.githubusercontent.com/itszavoo/images/main/mouse.jpeg";
+    text="Rookie !!";
+  }
+  else if(score < 2){
+    img="https://raw.githubusercontent.com/itszavoo/images/main/chadg.jpeg";
+    text="GA Chad !!";
+  }
+  else{
+    img="https://raw.githubusercontent.com/itszavoo/images/main/winner.jpeg";
+    text="GA Legend !!";
+    isBig = true;
+  }
 
   document.getElementById("resultImg").innerHTML =
-    `<img src="${img}" class="big-img">`;
+    `<img src="${img}" class="${isBig ? 'big-img' : ''}">`;
 
   document.getElementById("resultText").innerText=text;
 
@@ -246,8 +289,8 @@ function saveScore(){
   let name=document.getElementById("name").value;
   if(!name)return;
 
-  let current = document.getElementById("resultText").innerText;
-  document.getElementById("resultText").innerText = current + " (" + name + ")";
+  let text=document.getElementById("resultText").innerText;
+  document.getElementById("resultText").innerText=text+" ("+name+")";
 }
 
 function downloadCard(){
